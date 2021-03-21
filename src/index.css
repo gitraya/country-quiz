@@ -70,6 +70,7 @@ body {
   border: 2px solid rgba(96, 102, 208, 0.7);
   border-radius: 12px;
   display: flex;
+  align-items: center;
   padding: 10px 20px;
   justify-content: space-between;
   cursor: pointer;
@@ -90,7 +91,7 @@ body {
 .alfa-text {
   font-size: 1rem;
   color: rgba(96, 102, 208, 0.8);
-  margin-right: 1rem;
+  margin-right: 1.25rem;
   pointer-events: none;
 }
 .answer-text {
@@ -106,6 +107,11 @@ body {
 .answer-button i {
   color: #fff;
   pointer-events: none;
+  margin-left: 1rem;
+  font-size: 1.2rem;
+}
+.answer-button:hover i {
+  color: #f9a826;
 }
 
 /* true falsy style state */
@@ -117,6 +123,11 @@ body {
   background: #ea8282;
   border-color: #ea8282;
 }
+.answer-button.true:hover i,
+.answer-button.false:hover i {
+  color: #f2f2f2;
+}
+
 .answer-button.false .alfa-text,
 .answer-button.false .answer-text,
 .answer-button.false i,

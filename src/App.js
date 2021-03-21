@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
+import Main from './components/Main';
+import Footer from './components/Footer';
 
 const App = () => {
+  // All countries state
   const [allCountries, setAllCountries] = useState(null);
   const [capitalQuiz, setCapitalQuiz] = useState({
     question: null,
@@ -11,34 +14,28 @@ const App = () => {
     option: [],
     alfabet: ['A', 'B', 'C', 'D'],
   });
+  // Quiz state
   const [quizState, setQuizState] = useState({
-    isNext: false,
     isTrue: false,
     isFalse: false,
   });
 
-  const buttonClass = `${quizState.isNext ? 'answer-button' : ''} ${
-    !quizState.isTrue ? '' : null
-  } ${quizState.isFalse ? 'false' : ''}`;
-
+  // Get random number
   const randomNum = function (max) {
     let number = Math.floor(Math.random() * max);
     return number;
   };
 
+  // Shuffle array
   const shuffle = (arr) => {
     for (let i = arr.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
+      let j = Math.floor(Math.random() * (i + 1));
 
-      // swap elements array[i] and array[j]
-      // we use "destructuring assignment" syntax to achieve that
-      // you'll find more details about that syntax in later chapters
-      // same can be written as:
-      // let t = array[i]; array[i] = array[j]; array[j] = t
       [arr[i], arr[j]] = [arr[j], arr[i]];
     }
   };
 
+  // Get unique random number
   function generateUniqueRandom(max, arr) {
     let number = randomNum(max);
 
@@ -54,7 +51,10 @@ const App = () => {
     }
   }
 
+  // Store and get random new question
   const storeCapitalQuiz = () => {
+    setQuizState({ isFalse: false, isTrue: false });
+
     let trueCountry = allCountries[randomNum(250)];
     if (!trueCountry.capital) trueCountry = allCountries[randomNum(250)];
     let falseCountry = [];
@@ -78,36 +78,20 @@ const App = () => {
       alfabet: capitalQuiz.alfabet,
     };
 
-    setQuizState({ ...quizState, isNext: true, isTrue: false });
     setCapitalQuiz(updateCapitalQuiz);
   };
 
-  const checkAnswer = (e, answer) => {
+  console.log(quizState);
+  // Check the answer from user
+  const checkAnswer = async (e, answer) => {
     if (answer === capitalQuiz.answer.trueAnswer) {
-      e.target.classList.add('true');
-      setQuizState({ ...quizState, isTrue: true });
-      return console.log(true, 'Kamu benar');
+      await setQuizState({ isFalse: false, isTrue: true });
+      return e.target.classList.add('true');
+    } else {
+      await setQuizState({ isFalse: true, isTrue: false });
+      return e.target.classList.add('false');
     }
-    return console.log(false, 'Kamu salah');
   };
-
-  const answerButtonRender = capitalQuiz.option.map((answer, i) => {
-    return (
-      <button
-        key={i}
-        className={buttonClass}
-        onClick={(e) => {
-          checkAnswer(e, answer);
-        }}
-      >
-        <div className="wrap-answer">
-          <span className="alfa-text">{capitalQuiz.alfabet[i]}</span>
-          <span className="answer-text">{answer}</span>
-        </div>
-        <i>i</i>
-      </button>
-    );
-  });
 
   const fetchingCountry = async () => {
     await fetch('https://restcountries.eu/rest/v2/all')
@@ -134,35 +118,12 @@ const App = () => {
       <header className="App-header">
         <button onClick={storeCapitalQuiz}>Mulai</button>
       </header>
-      <main className="App-main">
-        <div className="container">
-          <h1 className="app-title">country quiz</h1>
-          <img
-            className="image-onquiz"
-            src={process.env.PUBLIC_URL + '/images/undraw_adventure_4hum 1.svg'}
-            alt="hero"
-          />
-          <div className="quiz-card">
-            <h2 className="question-text">{`${capitalQuiz.question} is the capital of`}</h2>
-            {answerButtonRender}
-          </div>
-        </div>
-      </main>
-      <footer className="App-footer">
-        <small className="copyright">
-          {`created by `}
-          <b>
-            <a
-              href="https://github.com/gitraya"
-              target="_blank"
-              rel="noreferrer"
-            >
-              gitraya
-            </a>
-          </b>
-          {`- devChallenges.io`}
-        </small>
-      </footer>
+      <Main
+        capitalQuiz={capitalQuiz}
+        quizState={quizState}
+        checkAnswer={checkAnswer}
+      />
+      <Footer />
     </div>
   );
 };
