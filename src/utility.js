@@ -34,9 +34,15 @@ export const storeCapitalQuiz = (
   allCountries,
   capitalQuiz,
   setCapitalQuiz,
+  quizState,
   setQuizState
 ) => {
-  setQuizState({ isFalse: false, isTrue: false });
+  setQuizState({
+    ...quizState,
+    startQuiz: true,
+    isFalse: false,
+    isTrue: false,
+  });
 
   let trueCountry = allCountries[randomNum(250)];
   if (!trueCountry.capital) trueCountry = allCountries[randomNum(250)];

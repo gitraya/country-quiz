@@ -26,22 +26,63 @@ const Main = forwardRef(
       );
     });
 
-    useEffect(() => {
-      setButtonRefs((buttonRefs) =>
-        Array(capitalQuiz.option.length)
-          .fill()
-          .map((_, i) => buttonRefs[i] || createRef())
+    const quizMenuTemplate = () => {
+      return (
+        <div className="container">
+          <h1 className="app-title">country quiz</h1>
+          <div
+            className="quiz-card"
+            style={
+              quizState.isTrue || quizState.isFalse
+                ? { paddingBottom: '1rem' }
+                : {}
+            }
+          >
+            <form action="">
+              <div className="form-quiz-type">
+                <h2 className="question-text">Select the question type?</h2>
+                <div className="input-control">
+                  <input
+                    id="capital"
+                    title="capital"
+                    name="capital"
+                    type="checkbox"
+                    className="checkbox-quiz"
+                  />
+                  <label htmlFor="capital">Capital of a country</label>
+                </div>
+                <div className="input-control">
+                  <input
+                    id="flag"
+                    title="flag"
+                    name="flag"
+                    type="checkbox"
+                    className="checkbox-quiz"
+                  />
+                  <label htmlFor="flag">Flag of a country</label>
+                </div>
+              </div>
+              <div className="form-quiz-type">
+                <h2 className="question-text">
+                  How many questions do you want to play?
+                </h2>
+              </div>
+            </form>
+            <button
+              onClick={() => {
+                storeCapitalQuiz();
+              }}
+              type="submit"
+            >
+              Start Game
+            </button>
+          </div>
+        </div>
       );
-    }, [capitalQuiz.option.length]);
+    };
 
-    useImperativeHandle(ref, () => {
-      return {
-        buttonRefs: buttonRefs,
-      };
-    });
-
-    return (
-      <main className="App-main">
+    const quizActiveTemplate = () => {
+      return (
         <div className="container">
           <h1 className="app-title">country quiz</h1>
           <img
@@ -74,6 +115,26 @@ const Main = forwardRef(
             )}
           </div>
         </div>
+      );
+    };
+
+    useEffect(() => {
+      setButtonRefs((buttonRefs) =>
+        Array(capitalQuiz.option.length)
+          .fill()
+          .map((_, i) => buttonRefs[i] || createRef())
+      );
+    }, [capitalQuiz.option.length]);
+
+    useImperativeHandle(ref, () => {
+      return {
+        buttonRefs: buttonRefs,
+      };
+    });
+
+    return (
+      <main className="App-main">
+        {quizState.startQuiz ? quizActiveTemplate() : quizMenuTemplate()}
       </main>
     );
   }

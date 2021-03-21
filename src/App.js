@@ -17,8 +17,11 @@ const App = () => {
   });
   // Quiz state
   const [quizState, setQuizState] = useState({
+    startQuiz: false,
+    endQuiz: false,
     isTrue: false,
     isFalse: false,
+    score: 0,
   });
 
   // Refs
@@ -27,10 +30,15 @@ const App = () => {
   // Check the answer from user
   const checkAnswer = async (e, answer) => {
     if (answer === capitalQuiz.answer.trueAnswer) {
-      await setQuizState({ isFalse: false, isTrue: true });
+      await setQuizState({
+        ...quizState,
+        isFalse: false,
+        isTrue: true,
+        score: (quizState.score += 1),
+      });
       return e.target.classList.add('true');
     } else {
-      await setQuizState({ isFalse: true, isTrue: false });
+      await setQuizState({ ...quizState, isFalse: true, isTrue: false });
       buttonRefs.current.buttonRefs.map((elButton) => {
         if (
           elButton.current.querySelector('.answer-text').innerText ===
@@ -66,20 +74,6 @@ const App = () => {
         })`,
       }}
     >
-      <header className="App-header">
-        <button
-          onClick={() => {
-            storeCapitalQuiz(
-              allCountries,
-              capitalQuiz,
-              setCapitalQuiz,
-              setQuizState
-            );
-          }}
-        >
-          Mulai
-        </button>
-      </header>
       <Main
         ref={buttonRefs}
         capitalQuiz={capitalQuiz}
@@ -90,6 +84,7 @@ const App = () => {
             allCountries,
             capitalQuiz,
             setCapitalQuiz,
+            quizState,
             setQuizState
           );
         }}
