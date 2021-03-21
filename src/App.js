@@ -11,9 +11,15 @@ const App = () => {
     option: [],
     alfabet: ['A', 'B', 'C', 'D'],
   });
-  const [answerStyles, setAnswerStyles] = useState({
-    true: { background: '#EA8282' },
+  const [quizState, setQuizState] = useState({
+    isNext: false,
+    isTrue: false,
+    isFalse: false,
   });
+
+  const buttonClass = `${quizState.isNext ? 'answer-button' : ''} ${
+    !quizState.isTrue ? '' : null
+  } ${quizState.isFalse ? 'false' : ''}`;
 
   const randomNum = function (max) {
     let number = Math.floor(Math.random() * max);
@@ -72,12 +78,14 @@ const App = () => {
       alfabet: capitalQuiz.alfabet,
     };
 
+    setQuizState({ ...quizState, isNext: true, isTrue: false });
     setCapitalQuiz(updateCapitalQuiz);
   };
 
-  const checkAnswer = (answer) => {
+  const checkAnswer = (e, answer) => {
     if (answer === capitalQuiz.answer.trueAnswer) {
-      storeCapitalQuiz();
+      e.target.classList.add('true');
+      setQuizState({ ...quizState, isTrue: true });
       return console.log(true, 'Kamu benar');
     }
     return console.log(false, 'Kamu salah');
@@ -87,9 +95,9 @@ const App = () => {
     return (
       <button
         key={i}
-        className="answer-button"
-        onClick={() => {
-          checkAnswer(answer);
+        className={buttonClass}
+        onClick={(e) => {
+          checkAnswer(e, answer);
         }}
       >
         <div className="wrap-answer">
