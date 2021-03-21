@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Main from './components/Main';
 import Footer from './components/Footer';
 
@@ -19,6 +19,9 @@ const App = () => {
     isTrue: false,
     isFalse: false,
   });
+
+  // Refs
+  const answerRefs = useRef(null);
 
   // Get random number
   const randomNum = function (max) {
@@ -81,7 +84,6 @@ const App = () => {
     setCapitalQuiz(updateCapitalQuiz);
   };
 
-  console.log(quizState);
   // Check the answer from user
   const checkAnswer = async (e, answer) => {
     if (answer === capitalQuiz.answer.trueAnswer) {
@@ -89,6 +91,15 @@ const App = () => {
       return e.target.classList.add('true');
     } else {
       await setQuizState({ isFalse: true, isTrue: false });
+      answerRefs.current.answerRefs.map((elAnswer) => {
+        if (
+          elAnswer.current.querySelector('.answer-text').innerText ===
+          capitalQuiz.answer.trueAnswer
+        ) {
+          return (elAnswer.current.className = 'answer-button true');
+        }
+        return elAnswer;
+      });
       return e.target.classList.add('false');
     }
   };
@@ -104,7 +115,7 @@ const App = () => {
 
   useEffect(() => {
     if (!allCountries) return fetchingCountry();
-  });
+  }, [allCountries]);
 
   return (
     <div
@@ -119,6 +130,7 @@ const App = () => {
         <button onClick={storeCapitalQuiz}>Mulai</button>
       </header>
       <Main
+        ref={answerRefs}
         capitalQuiz={capitalQuiz}
         quizState={quizState}
         checkAnswer={checkAnswer}

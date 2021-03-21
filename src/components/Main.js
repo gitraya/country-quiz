@@ -1,9 +1,19 @@
+import {
+  useEffect,
+  useState,
+  createRef,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
 import AnswerButton from './AnswerButton';
 
-const Main = ({ capitalQuiz, quizState, checkAnswer }) => {
+const Main = forwardRef(({ capitalQuiz, quizState, checkAnswer }, ref) => {
+  const [answerRefs, setAnswerRefs] = useState([]);
+
   const answerButtonRender = capitalQuiz.option.map((answer, i) => {
     return (
       <AnswerButton
+        ref={answerRefs[i]}
         answer={answer}
         key={i}
         index={i}
@@ -13,6 +23,20 @@ const Main = ({ capitalQuiz, quizState, checkAnswer }) => {
         disabled={quizState.isTrue || quizState.isFalse ? 'disabled' : null}
       />
     );
+  });
+
+  useEffect(() => {
+    setAnswerRefs((answerRefs) =>
+      Array(capitalQuiz.option.length)
+        .fill()
+        .map((_, i) => answerRefs[i] || createRef())
+    );
+  }, [capitalQuiz.option.length]);
+
+  useImperativeHandle(ref, () => {
+    return {
+      answerRefs: answerRefs,
+    };
   });
 
   return (
@@ -31,6 +55,6 @@ const Main = ({ capitalQuiz, quizState, checkAnswer }) => {
       </div>
     </main>
   );
-};
+});
 
 export default Main;
