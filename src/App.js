@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Main from './components/Main';
 import Footer from './components/Footer';
+import { storeCapitalQuiz } from './utility';
 
 const App = () => {
   // All countries state
@@ -22,67 +23,6 @@ const App = () => {
 
   // Refs
   const buttonRefs = useRef(null);
-
-  // Get random number
-  const randomNum = function (max) {
-    let number = Math.floor(Math.random() * max);
-    return number;
-  };
-
-  // Shuffle array
-  const shuffle = (arr) => {
-    for (let i = arr.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1));
-
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-  };
-
-  // Get unique random number
-  function generateUniqueRandom(max, arr) {
-    let number = randomNum(max);
-
-    if (!arr.includes(number)) {
-      arr.push(number);
-      return number;
-    } else {
-      if (arr.length < max) {
-        return generateUniqueRandom(max, arr);
-      } else {
-        return false;
-      }
-    }
-  }
-
-  // Store and get random new question
-  const storeCapitalQuiz = () => {
-    setQuizState({ isFalse: false, isTrue: false });
-
-    let trueCountry = allCountries[randomNum(250)];
-    if (!trueCountry.capital) trueCountry = allCountries[randomNum(250)];
-    let falseCountry = [];
-    let randArr = [];
-
-    for (let i = 1; i <= 3; i++) {
-      let rand = generateUniqueRandom(250, randArr);
-      falseCountry.push(allCountries[rand].name);
-    }
-
-    const option = [trueCountry.name, ...falseCountry];
-    shuffle(option);
-
-    const updateCapitalQuiz = {
-      question: trueCountry.capital,
-      answer: {
-        trueAnswer: trueCountry.name,
-        falseAnswer: falseCountry,
-      },
-      option: option,
-      alfabet: capitalQuiz.alfabet,
-    };
-
-    setCapitalQuiz(updateCapitalQuiz);
-  };
 
   // Check the answer from user
   const checkAnswer = async (e, answer) => {
@@ -127,13 +67,32 @@ const App = () => {
       }}
     >
       <header className="App-header">
-        <button onClick={storeCapitalQuiz}>Mulai</button>
+        <button
+          onClick={() => {
+            storeCapitalQuiz(
+              allCountries,
+              capitalQuiz,
+              setCapitalQuiz,
+              setQuizState
+            );
+          }}
+        >
+          Mulai
+        </button>
       </header>
       <Main
         ref={buttonRefs}
         capitalQuiz={capitalQuiz}
         quizState={quizState}
         checkAnswer={checkAnswer}
+        storeCapitalQuiz={() => {
+          storeCapitalQuiz(
+            allCountries,
+            capitalQuiz,
+            setCapitalQuiz,
+            setQuizState
+          );
+        }}
       />
       <Footer />
     </div>

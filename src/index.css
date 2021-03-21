@@ -55,7 +55,7 @@ body {
   flex-direction: column;
   background: #fff;
   border-radius: 24px;
-  padding: 3rem 2rem;
+  padding: 3.5rem 2rem 3rem;
 }
 
 .question-text {
@@ -112,6 +112,23 @@ body {
 }
 .answer-button:hover i {
   color: #f9a826;
+}
+
+.next-button {
+  align-self: flex-end;
+  width: fit-content;
+  background: #f9a826;
+  box-shadow: 0px 2px 4px rgba(252, 168, 47, 0.4);
+  border-radius: 12px;
+  padding: 14px 36px;
+  font-weight: 700;
+  color: #f2f2f2;
+  border: 1px solid #f9a826;
+  margin: 0.75rem 0px;
+  cursor: pointer;
+}
+.next-button:focus {
+  outline: none !important;
 }
 
 /* true falsy style state */
