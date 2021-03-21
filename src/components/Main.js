@@ -8,12 +8,12 @@ import {
 import AnswerButton from './AnswerButton';
 
 const Main = forwardRef(({ capitalQuiz, quizState, checkAnswer }, ref) => {
-  const [answerRefs, setAnswerRefs] = useState([]);
+  const [buttonRefs, setButtonRefs] = useState([]);
 
   const answerButtonRender = capitalQuiz.option.map((answer, i) => {
     return (
       <AnswerButton
-        ref={answerRefs[i]}
+        ref={buttonRefs[i]}
         answer={answer}
         key={i}
         index={i}
@@ -26,16 +26,16 @@ const Main = forwardRef(({ capitalQuiz, quizState, checkAnswer }, ref) => {
   });
 
   useEffect(() => {
-    setAnswerRefs((answerRefs) =>
+    setButtonRefs((buttonRefs) =>
       Array(capitalQuiz.option.length)
         .fill()
-        .map((_, i) => answerRefs[i] || createRef())
+        .map((_, i) => buttonRefs[i] || createRef())
     );
   }, [capitalQuiz.option.length]);
 
   useImperativeHandle(ref, () => {
     return {
-      answerRefs: answerRefs,
+      buttonRefs: buttonRefs,
     };
   });
 

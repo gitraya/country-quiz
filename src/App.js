@@ -21,7 +21,7 @@ const App = () => {
   });
 
   // Refs
-  const answerRefs = useRef(null);
+  const buttonRefs = useRef(null);
 
   // Get random number
   const randomNum = function (max) {
@@ -91,14 +91,14 @@ const App = () => {
       return e.target.classList.add('true');
     } else {
       await setQuizState({ isFalse: true, isTrue: false });
-      answerRefs.current.answerRefs.map((elAnswer) => {
+      buttonRefs.current.buttonRefs.map((elButton) => {
         if (
-          elAnswer.current.querySelector('.answer-text').innerText ===
+          elButton.current.querySelector('.answer-text').innerText ===
           capitalQuiz.answer.trueAnswer
         ) {
-          return (elAnswer.current.className = 'answer-button true');
+          return (elButton.current.className = 'answer-button true');
         }
-        return elAnswer;
+        return elButton;
       });
       return e.target.classList.add('false');
     }
@@ -130,7 +130,7 @@ const App = () => {
         <button onClick={storeCapitalQuiz}>Mulai</button>
       </header>
       <Main
-        ref={answerRefs}
+        ref={buttonRefs}
         capitalQuiz={capitalQuiz}
         quizState={quizState}
         checkAnswer={checkAnswer}
