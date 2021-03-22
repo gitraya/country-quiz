@@ -29,23 +29,26 @@ export const generateUniqueRandom = (max, arr) => {
   }
 };
 
-// Get and store random capital quiz
-export const storeCapitalQuiz = (
+// Get and store random quiz question
+export const getQuizQuestion = (
   allCountries,
-  capitalQuiz,
-  setCapitalQuiz,
-  quizState,
-  setQuizState
+  quizTypeState,
+  setQuizTypeState,
+  type
 ) => {
-  setQuizState({
-    ...quizState,
-    startQuiz: true,
-    isFalse: false,
-    isTrue: false,
-  });
-
   let trueCountry = allCountries[randomNum(250)];
-  if (!trueCountry.capital) trueCountry = allCountries[randomNum(250)];
+  switch (type) {
+    case 'capital':
+      if (!trueCountry.capital)
+        return (trueCountry = allCountries[randomNum(250)]);
+      break;
+    case 'flag':
+      if (!trueCountry.flag)
+        return (trueCountry = allCountries[randomNum(250)]);
+      break;
+    default:
+      break;
+  }
   let falseCountry = [];
   let randArr = [];
 
@@ -57,15 +60,20 @@ export const storeCapitalQuiz = (
   const option = [trueCountry.name, ...falseCountry];
   shuffle(option);
 
-  const updateCapitalQuiz = {
-    question: trueCountry.capital,
+  const updateQuizType = {
+    question:
+      type === 'capital'
+        ? trueCountry.capital
+        : type === 'flag'
+        ? trueCountry.flag
+        : '',
     answer: {
       trueAnswer: trueCountry.name,
       falseAnswer: falseCountry,
     },
     option: option,
-    alfabet: capitalQuiz.alfabet,
+    alfabet: quizTypeState.alfabet,
   };
 
-  setCapitalQuiz(updateCapitalQuiz);
+  setQuizTypeState(updateQuizType);
 };

@@ -1,12 +1,22 @@
 import { useState, useEffect, useRef } from 'react';
 import Main from './components/Main';
 import Footer from './components/Footer';
-import { storeCapitalQuiz } from './utility';
+import { getQuizQuestion } from './utility';
 
 const App = () => {
   // All countries state
   const [allCountries, setAllCountries] = useState(null);
+  // State of questions type
   const [capitalQuiz, setCapitalQuiz] = useState({
+    question: null,
+    answer: {
+      trueAnswer: null,
+      falseAnswer: [],
+    },
+    option: [],
+    alfabet: ['A', 'B', 'C', 'D'],
+  });
+  const [flagQuiz, setFlagQuiz] = useState({
     question: null,
     answer: {
       trueAnswer: null,
@@ -18,6 +28,12 @@ const App = () => {
   // Quiz state
   const [quizState, setQuizState] = useState({
     startQuiz: false,
+    level: 30,
+    stage: 0,
+    type: {
+      capital: true,
+      flag: false,
+    },
     endQuiz: false,
     isTrue: false,
     isFalse: false,
@@ -27,9 +43,51 @@ const App = () => {
   // Refs
   const buttonRefs = useRef(null);
 
+  const getQuestion = () => {
+    if (quizState.level === quizState.stage) {
+      console.log(quizState.score);
+
+      setQuizState({
+        startQuiz: false,
+        level: 30,
+        stage: 0,
+        type: {
+          capital: true,
+          flag: false,
+        },
+        endQuiz: true,
+        isTrue: false,
+        isFalse: false,
+        score: 0,
+      });
+      return;
+    }
+
+    setQuizState({
+      ...quizState,
+      startQuiz: true,
+      endQuiz: false,
+      isFalse: false,
+      isTrue: false,
+      stage: (quizState.stage += 1),
+    });
+
+    if (quizState.type.capital) {
+      return getQuizQuestion(
+        allCountries,
+        capitalQuiz,
+        setCapitalQuiz,
+        'capital'
+      );
+    }
+    if (quizState.type.flag) {
+      return getQuizQuestion(allCountries, flagQuiz, setFlagQuiz, 'flag');
+    }
+  };
+
   // Check the answer from user
-  const checkAnswer = async (e, answer) => {
-    if (answer === capitalQuiz.answer.trueAnswer) {
+  const checkAnswer = async (e, answer, type) => {
+    if (answer === type.answer.trueAnswer) {
       await setQuizState({
         ...quizState,
         isFalse: false,
@@ -39,15 +97,19 @@ const App = () => {
       return e.target.classList.add('true');
     } else {
       await setQuizState({ ...quizState, isFalse: true, isTrue: false });
-      buttonRefs.current.buttonRefs.map((elButton) => {
+
+      buttonRefs.current.buttonRefs.current.buttonRefs.map((elButton) => {
         if (
           elButton.current.querySelector('.answer-text').innerText ===
-          capitalQuiz.answer.trueAnswer
+          type.answer.trueAnswer
         ) {
+          elButton.current.querySelector('i').innerText =
+            'check_circle_outline';
           return (elButton.current.className = 'answer-button true');
         }
         return elButton;
       });
+
       return e.target.classList.add('false');
     }
   };
@@ -77,16 +139,12 @@ const App = () => {
       <Main
         ref={buttonRefs}
         capitalQuiz={capitalQuiz}
+        flagQuiz={flagQuiz}
         quizState={quizState}
         checkAnswer={checkAnswer}
-        storeCapitalQuiz={() => {
-          storeCapitalQuiz(
-            allCountries,
-            capitalQuiz,
-            setCapitalQuiz,
-            quizState,
-            setQuizState
-          );
+        setQuizState={setQuizState}
+        getQuestion={() => {
+          getQuestion();
         }}
       />
       <Footer />
