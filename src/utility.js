@@ -36,16 +36,21 @@ export const getQuizQuestion = (
   setQuizTypeState,
   type
 ) => {
+  if (type === 'capital')
+    allCountries = allCountries.filter((country) => country.capital !== '');
+  if (type === 'flag')
+    allCountries = allCountries.filter((country) => country.flag !== '');
+
   // Generate country data for question and true answer
-  let trueCountry = allCountries[randomNum(250)];
+  let trueCountry = allCountries[randomNum(allCountries.length)];
   switch (type) {
     case 'capital':
       if (!trueCountry.capital)
-        return (trueCountry = allCountries[randomNum(250)]);
+        return (trueCountry = allCountries[randomNum(allCountries.length)]);
       break;
     case 'flag':
       if (!trueCountry.flag)
-        return (trueCountry = allCountries[randomNum(250)]);
+        return (trueCountry = allCountries[randomNum(allCountries.length)]);
       break;
     default:
       break;
@@ -56,7 +61,7 @@ export const getQuizQuestion = (
   let randArr = [];
 
   for (let i = 1; i <= 3; i++) {
-    let rand = generateUniqueRandom(250, randArr);
+    let rand = generateUniqueRandom(allCountries.length, randArr);
     falseCountry.push(allCountries[rand].name);
   }
 

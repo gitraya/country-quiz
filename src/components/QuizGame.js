@@ -8,7 +8,10 @@ import {
 import AnswerButton from './AnswerButton';
 
 const QuizGame = forwardRef(
-  ({ checkAnswer, quizState, capitalQuiz, flagQuiz, getQuestion }, ref) => {
+  (
+    { checkAnswer, quizState, capitalQuiz, flagQuiz, getQuestion, setQuizType },
+    ref
+  ) => {
     // Button refs array
     const [buttonRefs, setButtonRefs] = useState([]);
 
@@ -101,6 +104,7 @@ const QuizGame = forwardRef(
               type="submit"
               className="next-button"
               onClick={() => {
+                setQuizType(Math.random() < 0.5);
                 getQuestion();
               }}
             >

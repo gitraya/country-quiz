@@ -37,8 +37,11 @@ const AnswerButton = forwardRef(
           <span className="answer-text">{answer}</span>
         </div>
         <i class="material-icons-round">
-          {!quizState.isTrue ? '' : 'check_circle_outline'}
-          {!quizState.isFalse ? '' : 'highlight_off'}
+          {quizState.isTrue
+            ? 'check_circle_outline'
+            : quizState.isFalse
+            ? 'highlight_off'
+            : ''}
         </i>
       </button>
     );

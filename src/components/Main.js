@@ -13,6 +13,7 @@ const Main = forwardRef(
       getQuestion,
       setQuizState,
       resetQuizGame,
+      setQuizType,
     },
     ref
   ) => {
@@ -35,6 +36,7 @@ const Main = forwardRef(
             quizState={quizState}
             checkAnswer={checkAnswer}
             getQuestion={getQuestion}
+            setQuizType={setQuizType}
           />
         ) : quizState.endQuiz ? (
           <QuizResult quizState={quizState} resetQuizGame={resetQuizGame} />
@@ -43,6 +45,7 @@ const Main = forwardRef(
             quizState={quizState}
             setQuizState={setQuizState}
             getQuestion={getQuestion}
+            setQuizType={setQuizType}
           />
         )}
       </main>

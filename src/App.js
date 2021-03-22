@@ -41,21 +41,14 @@ const App = () => {
     isFalse: false,
     score: 0,
   });
+  const [quizType, setQuizType] = useState(false);
 
   // Button refs
   const buttonRefs = useRef(null);
 
   // Get question
   const getQuestion = () => {
-    if (quizState.level === quizState.stage) {
-      setQuizState({
-        ...quizState,
-        startQuiz: false,
-        endQuiz: true,
-      });
-      return;
-    }
-
+    const { level, stage, type } = quizState;
     setQuizState({
       ...quizState,
       startQuiz: true,
@@ -65,7 +58,27 @@ const App = () => {
       stage: (quizState.stage += 1),
     });
 
-    if (quizState.type.capital) {
+    if (level === stage) {
+      setQuizState({
+        ...quizState,
+        startQuiz: false,
+        endQuiz: true,
+      });
+      return;
+    }
+
+    if (type.capital && type.flag) {
+      setQuizState({
+        ...quizState,
+        type: {
+          capital: quizType,
+          flag: !quizType,
+        },
+      });
+      return;
+    }
+
+    if (type.capital) {
       return getQuizQuestion(
         allCountries,
         capitalQuiz,
@@ -73,7 +86,7 @@ const App = () => {
         'capital'
       );
     }
-    if (quizState.type.flag) {
+    if (type.flag) {
       return getQuizQuestion(allCountries, flagQuiz, setFlagQuiz, 'flag');
     }
   };
@@ -154,6 +167,7 @@ const App = () => {
         checkAnswer={checkAnswer}
         setQuizState={setQuizState}
         resetQuizGame={resetQuizGame}
+        setQuizType={setQuizType}
         getQuestion={() => {
           getQuestion();
         }}
