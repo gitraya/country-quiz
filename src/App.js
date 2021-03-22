@@ -35,7 +35,6 @@ const App = () => {
     level: 30,
     stage: 0,
     score: 0,
-    question: 'one',
     type: {
       capital: true,
       flag: false,
@@ -43,6 +42,7 @@ const App = () => {
     isTrue: false,
     isFalse: false,
   });
+  const [typeQuiz, setTypeQuiz] = useState('one');
 
   // Button refs
   const buttonRefs = useRef(null);
@@ -89,12 +89,12 @@ const App = () => {
       },
     });
 
-    getOneTypeQuestion();
+    return getOneTypeQuestion();
   };
 
   // Check type of quiz
   const checkTypeOfQuiz = () => {
-    if (quizState.one === 'all') {
+    if (typeQuiz === 'all') {
       return getRandomAllTypeQuestion();
     } else {
       return getOneTypeQuestion();
@@ -111,8 +111,8 @@ const App = () => {
       isTrue: false,
       stage: (quizState.stage += 1),
     });
-    setQuizState({ ...quizState, question: 'all' });
-    console.log(quizState.question);
+
+    console.log(typeQuiz);
 
     checkTypeOfQuiz();
     checkQuizEnd();
@@ -155,7 +155,6 @@ const App = () => {
       level: 30,
       stage: 0,
       score: 0,
-      all: false,
       type: {
         capital: true,
         flag: false,
@@ -163,6 +162,7 @@ const App = () => {
       isTrue: false,
       isFalse: false,
     });
+    setTypeQuiz('one');
   };
 
   const fetchingCountry = async () => {
@@ -195,6 +195,7 @@ const App = () => {
         checkAnswer={checkAnswer}
         setQuizState={setQuizState}
         resetQuizGame={resetQuizGame}
+        setTypeQuiz={setTypeQuiz}
         getQuestion={() => {
           getQuestion();
         }}

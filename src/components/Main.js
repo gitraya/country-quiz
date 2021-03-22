@@ -13,6 +13,7 @@ const Main = forwardRef(
       getQuestion,
       setQuizState,
       resetQuizGame,
+      setTypeQuiz,
     },
     ref
   ) => {
@@ -43,6 +44,7 @@ const Main = forwardRef(
             quizState={quizState}
             setQuizState={setQuizState}
             getQuestion={getQuestion}
+            setTypeQuiz={setTypeQuiz}
           />
         )}
       </main>
