@@ -112,8 +112,6 @@ const App = () => {
       stage: (quizState.stage += 1),
     });
 
-    console.log(typeQuiz);
-
     checkTypeOfQuiz();
     checkQuizEnd();
   };
