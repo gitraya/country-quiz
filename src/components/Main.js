@@ -16,6 +16,7 @@ const Main = forwardRef(
     },
     ref
   ) => {
+    // Button refs
     const buttonRefs = useRef(null);
 
     useImperativeHandle(ref, () => {
@@ -29,10 +30,10 @@ const Main = forwardRef(
         {quizState.startQuiz ? (
           <QuizGame
             ref={buttonRefs}
-            quizState={quizState}
-            checkAnswer={checkAnswer}
             capitalQuiz={capitalQuiz}
             flagQuiz={flagQuiz}
+            quizState={quizState}
+            checkAnswer={checkAnswer}
             getQuestion={getQuestion}
           />
         ) : quizState.endQuiz ? (

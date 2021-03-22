@@ -6,6 +6,7 @@ import { getQuizQuestion } from './utility';
 const App = () => {
   // All countries state
   const [allCountries, setAllCountries] = useState(null);
+
   // State of questions type
   const [capitalQuiz, setCapitalQuiz] = useState({
     question: null,
@@ -25,6 +26,7 @@ const App = () => {
     option: [],
     alfabet: ['A', 'B', 'C', 'D'],
   });
+
   // Quiz state
   const [quizState, setQuizState] = useState({
     startQuiz: false,
@@ -40,9 +42,10 @@ const App = () => {
     score: 0,
   });
 
-  // Refs
+  // Button refs
   const buttonRefs = useRef(null);
 
+  // Get question
   const getQuestion = () => {
     if (quizState.level === quizState.stage) {
       setQuizState({
@@ -75,6 +78,35 @@ const App = () => {
     }
   };
 
+  // Check the answer from user
+  const checkAnswer = async (e, answer, type) => {
+    if (answer === type.answer.trueAnswer) {
+      await setQuizState({
+        ...quizState,
+        isFalse: false,
+        isTrue: true,
+        score: (quizState.score += 1),
+      });
+
+      return e.target.classList.add('true');
+    } else {
+      await setQuizState({ ...quizState, isFalse: true, isTrue: false });
+      buttonRefs.current.buttonRefs.current.buttonRefs.map((elButton) => {
+        if (
+          elButton.current.querySelector('.answer-text').innerText ===
+          type.answer.trueAnswer
+        ) {
+          elButton.current.querySelector('i').innerText =
+            'check_circle_outline';
+          return (elButton.current.className = 'answer-button true');
+        }
+        return elButton;
+      });
+
+      return e.target.classList.add('false');
+    }
+  };
+
   // Reset quiz game
   const resetQuizGame = () => {
     setQuizState({
@@ -90,35 +122,6 @@ const App = () => {
       isFalse: false,
       score: 0,
     });
-  };
-
-  // Check the answer from user
-  const checkAnswer = async (e, answer, type) => {
-    if (answer === type.answer.trueAnswer) {
-      await setQuizState({
-        ...quizState,
-        isFalse: false,
-        isTrue: true,
-        score: (quizState.score += 1),
-      });
-      return e.target.classList.add('true');
-    } else {
-      await setQuizState({ ...quizState, isFalse: true, isTrue: false });
-
-      buttonRefs.current.buttonRefs.current.buttonRefs.map((elButton) => {
-        if (
-          elButton.current.querySelector('.answer-text').innerText ===
-          type.answer.trueAnswer
-        ) {
-          elButton.current.querySelector('i').innerText =
-            'check_circle_outline';
-          return (elButton.current.className = 'answer-button true');
-        }
-        return elButton;
-      });
-
-      return e.target.classList.add('false');
-    }
   };
 
   const fetchingCountry = async () => {

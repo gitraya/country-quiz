@@ -9,8 +9,10 @@ import AnswerButton from './AnswerButton';
 
 const QuizGame = forwardRef(
   ({ checkAnswer, quizState, capitalQuiz, flagQuiz, getQuestion }, ref) => {
+    // Button refs array
     const [buttonRefs, setButtonRefs] = useState([]);
 
+    // Render answer button
     const answerButtonRender = (type) => {
       return type.option.map((answer, i) => {
         return (
@@ -29,6 +31,7 @@ const QuizGame = forwardRef(
       });
     };
 
+    // Set button refs
     const setTypeButtonRefs = (type) => {
       setButtonRefs((buttonRefs) =>
         Array(type.option.length)

@@ -36,6 +36,7 @@ export const getQuizQuestion = (
   setQuizTypeState,
   type
 ) => {
+  // Generate country data for question and true answer
   let trueCountry = allCountries[randomNum(250)];
   switch (type) {
     case 'capital':
@@ -49,6 +50,8 @@ export const getQuizQuestion = (
     default:
       break;
   }
+
+  // Generate country data for false answer
   let falseCountry = [];
   let randArr = [];
 
@@ -57,9 +60,11 @@ export const getQuizQuestion = (
     falseCountry.push(allCountries[rand].name);
   }
 
+  // Shuffle answer option
   const option = [trueCountry.name, ...falseCountry];
   shuffle(option);
 
+  // Set updated quiz
   const updateQuizType = {
     question:
       type === 'capital'
@@ -75,5 +80,53 @@ export const getQuizQuestion = (
     alfabet: quizTypeState.alfabet,
   };
 
+  // Update quiz
   setQuizTypeState(updateQuizType);
+};
+
+// Handle value change
+export const onValueChange = (e, state, setState, id) => {
+  switch (e.target.name) {
+    case 'type':
+      switch (id) {
+        case 'capital':
+          setState({
+            ...state,
+            type: { ...state.type, capital: !state.type.capital },
+          });
+          break;
+        case 'flag':
+          setState({
+            ...state,
+            type: { ...state.type, flag: !state.type.flag },
+          });
+          break;
+        default:
+          break;
+      }
+      break;
+    case 'level':
+      switch (e.target.value) {
+        case 'VeryEasy':
+          setState({ ...state, level: 5 });
+          break;
+        case 'Easy':
+          setState({ ...state, level: 15 });
+          break;
+        case 'Normal':
+          setState({ ...state, level: 30 });
+          break;
+        case 'Hard':
+          setState({ ...state, level: 65 });
+          break;
+        case 'VeryHard':
+          setState({ ...state, level: 100 });
+          break;
+        default:
+          break;
+      }
+      break;
+    default:
+      break;
+  }
 };

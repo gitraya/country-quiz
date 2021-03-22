@@ -1,14 +1,9 @@
+import { onValueChange } from '../utility';
+
 const QuizMenu = ({ quizState, setQuizState, getQuestion }) => {
+  // Start a quiz game
   const startGame = () => {
-    const {
-      startQuiz,
-      level,
-      type,
-      endQuiz,
-      isTrue,
-      isFalse,
-      score,
-    } = quizState;
+    const { type } = quizState;
     const { capital, flag } = type;
 
     if (!capital && !flag) {
@@ -17,55 +12,15 @@ const QuizMenu = ({ quizState, setQuizState, getQuestion }) => {
     getQuestion();
   };
 
+  // Handle form submit
   const handleFormSubmit = (e) => {
     e.preventDefault();
     startGame();
   };
 
-  const onValueChange = (e, id) => {
-    switch (e.target.name) {
-      case 'type':
-        switch (id) {
-          case 'capital':
-            setQuizState({
-              ...quizState,
-              type: { ...quizState.type, capital: !quizState.type.capital },
-            });
-            break;
-          case 'flag':
-            setQuizState({
-              ...quizState,
-              type: { ...quizState.type, flag: !quizState.type.flag },
-            });
-            break;
-          default:
-            break;
-        }
-        break;
-      case 'level':
-        switch (e.target.value) {
-          case 'VeryEasy':
-            setQuizState({ ...quizState, level: 5 });
-            break;
-          case 'Easy':
-            setQuizState({ ...quizState, level: 15 });
-            break;
-          case 'Normal':
-            setQuizState({ ...quizState, level: 30 });
-            break;
-          case 'Hard':
-            setQuizState({ ...quizState, level: 65 });
-            break;
-          case 'VeryHard':
-            setQuizState({ ...quizState, level: 100 });
-            break;
-          default:
-            break;
-        }
-        break;
-      default:
-        break;
-    }
+  // Handle value change
+  const handleValueChange = (e) => {
+    onValueChange(e, quizState, setQuizState);
   };
 
   return (
@@ -87,7 +42,7 @@ const QuizMenu = ({ quizState, setQuizState, getQuestion }) => {
                 type="checkbox"
                 defaultChecked={quizState.type.capital}
                 onChange={(e) => {
-                  onValueChange(e, 'capital');
+                  onValueChange(e, quizState, setQuizState, 'capital');
                 }}
                 className="checkbox-quiz"
               />
@@ -101,7 +56,7 @@ const QuizMenu = ({ quizState, setQuizState, getQuestion }) => {
                 name="type"
                 type="checkbox"
                 onChange={(e) => {
-                  onValueChange(e, 'flag');
+                  onValueChange(e, quizState, setQuizState, 'flag');
                 }}
                 className="checkbox-quiz"
               />
@@ -121,7 +76,7 @@ const QuizMenu = ({ quizState, setQuizState, getQuestion }) => {
                 name="level"
                 id="veryeasy"
                 checked={quizState.level === 5}
-                onChange={onValueChange}
+                onChange={handleValueChange}
                 value="VeryEasy"
               />
               <label
@@ -136,7 +91,7 @@ const QuizMenu = ({ quizState, setQuizState, getQuestion }) => {
                 name="level"
                 id="easy"
                 checked={quizState.level === 15}
-                onChange={onValueChange}
+                onChange={handleValueChange}
                 value="Easy"
               />
               <label className="form-label" htmlFor="easy">{`Easy (15)`}</label>
@@ -148,7 +103,7 @@ const QuizMenu = ({ quizState, setQuizState, getQuestion }) => {
                 name="level"
                 id="normal"
                 checked={quizState.level === 30}
-                onChange={onValueChange}
+                onChange={handleValueChange}
                 value="Normal"
               />
               <label
@@ -163,7 +118,7 @@ const QuizMenu = ({ quizState, setQuizState, getQuestion }) => {
                 name="level"
                 id="hard"
                 checked={quizState.level === 65}
-                onChange={onValueChange}
+                onChange={handleValueChange}
                 value="Hard"
               />
               <label className="form-label" htmlFor="hard">{`Hard (65)`}</label>
@@ -175,7 +130,7 @@ const QuizMenu = ({ quizState, setQuizState, getQuestion }) => {
                 name="level"
                 id="veryhard"
                 checked={quizState.level === 100}
-                onChange={onValueChange}
+                onChange={handleValueChange}
                 value="VeryHard"
               />
               <label
