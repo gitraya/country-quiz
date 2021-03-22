@@ -17,6 +17,7 @@ const App = () => {
     option: [],
     alfabet: ['A', 'B', 'C', 'D'],
   });
+
   const [flagQuiz, setFlagQuiz] = useState({
     question: null,
     answer: {
@@ -30,35 +31,27 @@ const App = () => {
   // Quiz state
   const [quizState, setQuizState] = useState({
     startQuiz: false,
+    endQuiz: false,
     level: 30,
     stage: 0,
+    score: 0,
+    question: 'one',
     type: {
       capital: true,
       flag: false,
     },
-    endQuiz: false,
     isTrue: false,
     isFalse: false,
-    score: 0,
   });
-  const [quizType, setQuizType] = useState(false);
 
   // Button refs
   const buttonRefs = useRef(null);
 
-  // Get question
-  const getQuestion = () => {
-    const { level, stage, type } = quizState;
-    setQuizState({
-      ...quizState,
-      startQuiz: true,
-      endQuiz: false,
-      isFalse: false,
-      isTrue: false,
-      stage: (quizState.stage += 1),
-    });
+  // Check game end
+  const checkQuizEnd = () => {
+    const { level, stage } = quizState;
 
-    if (level === stage) {
+    if (stage === level + 1) {
       setQuizState({
         ...quizState,
         startQuiz: false,
@@ -66,17 +59,11 @@ const App = () => {
       });
       return;
     }
+  };
 
-    if (type.capital && type.flag) {
-      setQuizState({
-        ...quizState,
-        type: {
-          capital: quizType,
-          flag: !quizType,
-        },
-      });
-      return;
-    }
+  // Get one of type question
+  const getOneTypeQuestion = () => {
+    const { type } = quizState;
 
     if (type.capital) {
       return getQuizQuestion(
@@ -89,6 +76,46 @@ const App = () => {
     if (type.flag) {
       return getQuizQuestion(allCountries, flagQuiz, setFlagQuiz, 'flag');
     }
+  };
+
+  // Get random type question
+  const getRandomAllTypeQuestion = () => {
+    const randBool = Math.random() < 0.5;
+    setQuizState({
+      ...quizState,
+      type: {
+        capital: randBool,
+        flag: !randBool,
+      },
+    });
+
+    getOneTypeQuestion();
+  };
+
+  // Check type of quiz
+  const checkTypeOfQuiz = () => {
+    if (quizState.one === 'all') {
+      return getRandomAllTypeQuestion();
+    } else {
+      return getOneTypeQuestion();
+    }
+  };
+
+  // Get question
+  const getQuestion = () => {
+    setQuizState({
+      ...quizState,
+      startQuiz: true,
+      endQuiz: false,
+      isFalse: false,
+      isTrue: false,
+      stage: (quizState.stage += 1),
+    });
+    setQuizState({ ...quizState, question: 'all' });
+    console.log(quizState.question);
+
+    checkTypeOfQuiz();
+    checkQuizEnd();
   };
 
   // Check the answer from user
@@ -124,16 +151,17 @@ const App = () => {
   const resetQuizGame = () => {
     setQuizState({
       startQuiz: false,
+      endQuiz: false,
       level: 30,
       stage: 0,
+      score: 0,
+      all: false,
       type: {
         capital: true,
         flag: false,
       },
-      endQuiz: false,
       isTrue: false,
       isFalse: false,
-      score: 0,
     });
   };
 
@@ -167,7 +195,6 @@ const App = () => {
         checkAnswer={checkAnswer}
         setQuizState={setQuizState}
         resetQuizGame={resetQuizGame}
-        setQuizType={setQuizType}
         getQuestion={() => {
           getQuestion();
         }}
