@@ -45,20 +45,10 @@ const App = () => {
 
   const getQuestion = () => {
     if (quizState.level === quizState.stage) {
-      console.log(quizState.score);
-
       setQuizState({
+        ...quizState,
         startQuiz: false,
-        level: 30,
-        stage: 0,
-        type: {
-          capital: true,
-          flag: false,
-        },
         endQuiz: true,
-        isTrue: false,
-        isFalse: false,
-        score: 0,
       });
       return;
     }
@@ -83,6 +73,23 @@ const App = () => {
     if (quizState.type.flag) {
       return getQuizQuestion(allCountries, flagQuiz, setFlagQuiz, 'flag');
     }
+  };
+
+  // Reset quiz game
+  const resetQuizGame = () => {
+    setQuizState({
+      startQuiz: false,
+      level: 30,
+      stage: 0,
+      type: {
+        capital: true,
+        flag: false,
+      },
+      endQuiz: false,
+      isTrue: false,
+      isFalse: false,
+      score: 0,
+    });
   };
 
   // Check the answer from user
@@ -143,6 +150,7 @@ const App = () => {
         quizState={quizState}
         checkAnswer={checkAnswer}
         setQuizState={setQuizState}
+        resetQuizGame={resetQuizGame}
         getQuestion={() => {
           getQuestion();
         }}

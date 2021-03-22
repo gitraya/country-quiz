@@ -60,6 +60,14 @@ body {
 .quiz-card.menu {
   padding: 1rem 2rem;
 }
+.quiz-card.end {
+  align-items: center;
+  padding: 2rem;
+}
+.quiz-card.end img {
+  width: 13rem;
+  margin-bottom: auto;
+}
 .text-stage {
   position: absolute;
   top: 1rem;
@@ -68,6 +76,48 @@ body {
   font-size: 1.25rem;
   font-weight: 600;
 }
+
+/* Winner result text style */
+.win-text {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2rem 0px 3rem;
+}
+.win-text h1 {
+  text-align: center;
+  margin: 0.5rem 0px;
+  color: #2f527b;
+}
+.win-text p {
+  color: #2f527b;
+  font-size: 1rem;
+  margin: 0.25rem 0px;
+}
+.score-text {
+  font-size: 2rem;
+  color: #60bf88;
+  font-weight: 700;
+}
+
+.try-button {
+  color: #1d355d;
+  font-weight: 600;
+  margin-top: auto;
+  padding: 18px 60px;
+  border: 2px solid #1d355d;
+  background: #fff;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.try-button:hover,
+.try-button:focus {
+  outline: none !important;
+  background: #1d355d;
+  color: #f2f2f2;
+}
+/* Winner result text style */
 
 .question-text {
   font-size: 1.25rem;

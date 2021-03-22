@@ -1,6 +1,7 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import QuizGame from './QuizGame';
 import QuizMenu from './QuizMenu';
+import QuizResult from './QuizResult';
 
 const Main = forwardRef(
   (
@@ -11,6 +12,7 @@ const Main = forwardRef(
       checkAnswer,
       getQuestion,
       setQuizState,
+      resetQuizGame,
     },
     ref
   ) => {
@@ -33,6 +35,8 @@ const Main = forwardRef(
             flagQuiz={flagQuiz}
             getQuestion={getQuestion}
           />
+        ) : quizState.endQuiz ? (
+          <QuizResult quizState={quizState} resetQuizGame={resetQuizGame} />
         ) : (
           <QuizMenu
             quizState={quizState}
