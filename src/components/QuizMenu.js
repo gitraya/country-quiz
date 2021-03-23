@@ -1,16 +1,14 @@
 import { onValueChange } from '../utility';
 
-const QuizMenu = ({ quizState, setQuizState, getQuestion, setTypeQuiz }) => {
+const QuizMenu = ({ quizState, setQuizState, getQuestion, setQuizAllType }) => {
   // Start a quiz game
   const startGame = () => {
-    const { type } = quizState;
-    const { capital, flag } = type;
+    const { capital, flag } = quizState.type;
 
     if (!capital && !flag) {
       return alert('You must select at least one question type!');
-    }
-    if (capital && flag) {
-      setTypeQuiz('all');
+    } else if (capital && flag) {
+      setQuizAllType(true);
     }
 
     getQuestion();

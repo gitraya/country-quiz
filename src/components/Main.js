@@ -6,14 +6,13 @@ import QuizResult from './QuizResult';
 const Main = forwardRef(
   (
     {
-      capitalQuiz,
-      flagQuiz,
       quizState,
+      setQuizState,
+      setQuizAllType,
+      quizQuestion,
       checkAnswer,
       getQuestion,
-      setQuizState,
       resetQuizGame,
-      setTypeQuiz,
     },
     ref
   ) => {
@@ -31,9 +30,8 @@ const Main = forwardRef(
         {quizState.startQuiz ? (
           <QuizGame
             ref={buttonRefs}
-            capitalQuiz={capitalQuiz}
-            flagQuiz={flagQuiz}
             quizState={quizState}
+            quizQuestion={quizQuestion}
             checkAnswer={checkAnswer}
             getQuestion={getQuestion}
           />
@@ -44,7 +42,7 @@ const Main = forwardRef(
             quizState={quizState}
             setQuizState={setQuizState}
             getQuestion={getQuestion}
-            setTypeQuiz={setTypeQuiz}
+            setQuizAllType={setQuizAllType}
           />
         )}
       </main>

@@ -8,20 +8,13 @@ const App = () => {
   const [allCountries, setAllCountries] = useState(null);
 
   // State of questions type
-  const [capitalQuiz, setCapitalQuiz] = useState({
-    question: null,
-    answer: {
-      trueAnswer: null,
-      falseAnswer: [],
+  const [quizQuestion, setQuizQuestion] = useState({
+    question: {
+      capital: '',
+      flag: '',
     },
-    option: [],
-    alfabet: ['A', 'B', 'C', 'D'],
-  });
-
-  const [flagQuiz, setFlagQuiz] = useState({
-    question: null,
     answer: {
-      trueAnswer: null,
+      trueAnswer: '',
       falseAnswer: [],
     },
     option: [],
@@ -42,7 +35,8 @@ const App = () => {
     isTrue: false,
     isFalse: false,
   });
-  const [typeQuiz, setTypeQuiz] = useState('one');
+
+  const [quizAllType, setQuizAllType] = useState(false);
 
   // Button refs
   const buttonRefs = useRef(null);
@@ -61,49 +55,24 @@ const App = () => {
     }
   };
 
-  // Get one of type question
-  const getOneTypeQuestion = () => {
-    const { type } = quizState;
-
-    if (type.capital) {
-      return getQuizQuestion(
-        allCountries,
-        capitalQuiz,
-        setCapitalQuiz,
-        'capital'
-      );
+  const checkAllTypeQuiz = () => {
+    const randBoolean = Math.random() < 0.5;
+    if (quizAllType) {
+      setQuizState({
+        ...quizState,
+        type: {
+          capital: randBoolean,
+          flag: !randBoolean,
+        },
+      });
     }
-    if (type.flag) {
-      return getQuizQuestion(allCountries, flagQuiz, setFlagQuiz, 'flag');
-    }
-  };
 
-  // Get random type question
-  const getRandomAllTypeQuestion = () => {
-    const randBool = Math.random() < 0.5;
-    setQuizState({
-      ...quizState,
-      type: {
-        capital: randBool,
-        flag: !randBool,
-      },
-    });
-
-    return getOneTypeQuestion();
-  };
-
-  // Check type of quiz
-  const checkTypeOfQuiz = () => {
-    if (typeQuiz === 'all') {
-      return getRandomAllTypeQuestion();
-    } else {
-      return getOneTypeQuestion();
-    }
+    return getQuizQuestion(allCountries, quizQuestion, setQuizQuestion);
   };
 
   // Get question
-  const getQuestion = () => {
-    setQuizState({
+  const getQuestion = async () => {
+    await setQuizState({
       ...quizState,
       startQuiz: true,
       endQuiz: false,
@@ -112,13 +81,13 @@ const App = () => {
       stage: (quizState.stage += 1),
     });
 
-    checkTypeOfQuiz();
+    checkAllTypeQuiz();
     checkQuizEnd();
   };
 
   // Check the answer from user
-  const checkAnswer = async (e, answer, type) => {
-    if (answer === type.answer.trueAnswer) {
+  const checkAnswer = async (e, answer) => {
+    if (answer === quizQuestion.answer.trueAnswer) {
       await setQuizState({
         ...quizState,
         isFalse: false,
@@ -132,7 +101,7 @@ const App = () => {
       buttonRefs.current.buttonRefs.current.buttonRefs.map((elButton) => {
         if (
           elButton.current.querySelector('.answer-text').innerText ===
-          type.answer.trueAnswer
+          quizQuestion.answer.trueAnswer
         ) {
           elButton.current.querySelector('i').innerText =
             'check_circle_outline';
@@ -147,6 +116,18 @@ const App = () => {
 
   // Reset quiz game
   const resetQuizGame = () => {
+    setQuizQuestion({
+      question: {
+        capital: '',
+        flag: '',
+      },
+      answer: {
+        trueAnswer: '',
+        falseAnswer: [],
+      },
+      option: [],
+      alfabet: ['A', 'B', 'C', 'D'],
+    });
     setQuizState({
       startQuiz: false,
       endQuiz: false,
@@ -160,7 +141,7 @@ const App = () => {
       isTrue: false,
       isFalse: false,
     });
-    setTypeQuiz('one');
+    setQuizAllType(false);
   };
 
   const fetchingCountry = async () => {
@@ -187,16 +168,14 @@ const App = () => {
     >
       <Main
         ref={buttonRefs}
-        capitalQuiz={capitalQuiz}
-        flagQuiz={flagQuiz}
         quizState={quizState}
-        checkAnswer={checkAnswer}
         setQuizState={setQuizState}
+        quizQuestion={quizQuestion}
+        setQuizQuestion={setQuizQuestion}
+        setQuizAllType={setQuizAllType}
+        checkAnswer={checkAnswer}
         resetQuizGame={resetQuizGame}
-        setTypeQuiz={setTypeQuiz}
-        getQuestion={() => {
-          getQuestion();
-        }}
+        getQuestion={getQuestion}
       />
       <Footer />
     </div>

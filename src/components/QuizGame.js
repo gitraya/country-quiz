@@ -8,42 +8,33 @@ import {
 import AnswerButton from './AnswerButton';
 
 const QuizGame = forwardRef(
-  ({ checkAnswer, quizState, capitalQuiz, flagQuiz, getQuestion }, ref) => {
+  ({ checkAnswer, quizState, quizQuestion, getQuestion }, ref) => {
     // Button refs array
     const [buttonRefs, setButtonRefs] = useState([]);
 
     // Render answer button
-    const answerButtonRender = (type) => {
-      return type.option.map((answer, i) => {
-        return (
-          <AnswerButton
-            ref={buttonRefs[i]}
-            answer={answer}
-            key={i}
-            index={i}
-            capitalQuiz={capitalQuiz}
-            flagQuiz={flagQuiz}
-            quizState={quizState}
-            checkAnswer={checkAnswer}
-            disabled={quizState.isTrue || quizState.isFalse ? 'disabled' : null}
-          />
-        );
-      });
-    };
+    const answerButtonRender = quizQuestion.option.map((answer, i) => {
+      return (
+        <AnswerButton
+          ref={buttonRefs[i]}
+          answer={answer}
+          key={i}
+          index={i}
+          quizState={quizState}
+          quizQuestion={quizQuestion}
+          checkAnswer={checkAnswer}
+          disabled={quizState.isTrue || quizState.isFalse ? 'disabled' : null}
+        />
+      );
+    });
 
-    // Set button refs
-    const setTypeButtonRefs = (type) => {
+    useEffect(() => {
       setButtonRefs((buttonRefs) =>
-        Array(type.option.length)
+        Array(quizQuestion.option.length)
           .fill()
           .map((_, i) => buttonRefs[i] || createRef())
       );
-    };
-
-    useEffect(() => {
-      if (quizState.type.capital) return setTypeButtonRefs(capitalQuiz);
-      if (quizState.type.flag) return setTypeButtonRefs(flagQuiz);
-    }, [quizState, capitalQuiz, flagQuiz]);
+    }, [quizQuestion]);
 
     useImperativeHandle(ref, () => {
       return {
@@ -71,11 +62,11 @@ const QuizGame = forwardRef(
             {quizState.stage}/{quizState.level}
           </span>
           {quizState.type.capital ? (
-            <h2 className="question-text">{`${capitalQuiz.question} is the capital of`}</h2>
+            <h2 className="question-text">{`${quizQuestion.question.capital} is the capital of`}</h2>
           ) : quizState.type.flag ? (
             <div>
               <img
-                src={flagQuiz.question}
+                src={quizQuestion.question.flag}
                 style={{
                   width: '5.5rem',
                   height: 'auto',
@@ -91,19 +82,9 @@ const QuizGame = forwardRef(
           ) : (
             ''
           )}
-          {quizState.type.capital
-            ? answerButtonRender(capitalQuiz)
-            : quizState.type.flag
-            ? answerButtonRender(flagQuiz)
-            : ''}
+          {answerButtonRender}
           {quizState.isTrue || quizState.isFalse ? (
-            <button
-              type="submit"
-              className="next-button"
-              onClick={() => {
-                getQuestion();
-              }}
-            >
+            <button type="submit" className="next-button" onClick={getQuestion}>
               Next
             </button>
           ) : (
