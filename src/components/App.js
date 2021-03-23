@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import Main from 'components/Main';
-import Footer from 'components/Footer';
-import { getQuizQuestion } from 'utils/utils';
+import Main from './Main';
+import Footer from './Footer';
+import { getQuizQuestion } from '../utils/utils';
 
 const App = () => {
   // state for all countries

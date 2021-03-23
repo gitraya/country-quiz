@@ -5,7 +5,7 @@ import {
   forwardRef,
   createRef,
 } from 'react';
-import AnswerButton from 'components/Button/AnswerButton';
+import AnswerButton from '../Button/AnswerButton';
 
 const QuizGame = forwardRef(
   ({ checkAnswer, quizState, quizQuestion, getQuestion }, ref) => {

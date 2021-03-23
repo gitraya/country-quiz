@@ -1,4 +1,4 @@
-import { onValueChange } from 'utils/utils';
+import { onValueChange } from '../../utils/utils';
 
 const QuizMenu = ({ quizState, setQuizState, getQuestion, setQuizAllType }) => {
   // start a quiz

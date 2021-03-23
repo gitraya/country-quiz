@@ -1,7 +1,7 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
-import QuizMenu from 'components/Quiz/QuizMenu';
-import QuizGame from 'components/Quiz/QuizGame';
-import QuizResult from 'components/Quiz/QuizResult';
+import QuizMenu from './Quiz/QuizMenu';
+import QuizGame from './Quiz/QuizGame';
+import QuizResult from './Quiz/QuizResult';
 
 const Main = forwardRef(
   (
