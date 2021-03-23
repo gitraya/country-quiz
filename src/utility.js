@@ -1,5 +1,5 @@
 // Get random number
-export const randomNum = function (max) {
+export const randomNum = (max) => {
   let number = Math.floor(Math.random() * max);
   return number;
 };

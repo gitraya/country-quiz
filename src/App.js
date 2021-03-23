@@ -36,6 +36,7 @@ const App = () => {
     isFalse: false,
   });
 
+  // All type quiz active state
   const [quizAllType, setQuizAllType] = useState(false);
 
   // Button refs
@@ -55,6 +56,7 @@ const App = () => {
     }
   };
 
+  // Check all type quiz is active
   const checkAllTypeQuiz = () => {
     const randBoolean = Math.random() < 0.5;
     if (quizAllType) {
@@ -64,6 +66,8 @@ const App = () => {
           capital: randBoolean,
           flag: !randBoolean,
         },
+        isTrue: false,
+        isFalse: false,
       });
     }
 
