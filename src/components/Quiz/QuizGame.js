@@ -5,14 +5,14 @@ import {
   forwardRef,
   createRef,
 } from 'react';
-import AnswerButton from './AnswerButton';
+import AnswerButton from 'components/Button/AnswerButton';
 
 const QuizGame = forwardRef(
   ({ checkAnswer, quizState, quizQuestion, getQuestion }, ref) => {
-    // Button refs array
+    // array button refs
     const [buttonRefs, setButtonRefs] = useState([]);
 
-    // Render answer button
+    // create an answer button
     const answerButtonRender = quizQuestion.option.map((answer, i) => {
       return (
         <AnswerButton

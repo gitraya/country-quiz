@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
-import Main from './components/Main';
-import Footer from './components/Footer';
-import { getQuizQuestion } from './utility';
+import Main from 'components/Main';
+import Footer from 'components/Footer';
+import { getQuizQuestion } from 'utils/utils';
 
 const App = () => {
-  // All countries state
+  // state for all countries
   const [allCountries, setAllCountries] = useState(null);
 
-  // State of questions type
+  // state for quiz questions
   const [quizQuestion, setQuizQuestion] = useState({
     question: {
       capital: '',
@@ -21,7 +21,7 @@ const App = () => {
     alfabet: ['A', 'B', 'C', 'D'],
   });
 
-  // Quiz state
+  // state quiz
   const [quizState, setQuizState] = useState({
     startQuiz: false,
     endQuiz: false,
@@ -36,13 +36,13 @@ const App = () => {
     isFalse: false,
   });
 
-  // All type quiz active state
+  // state whether all question types are active
   const [quizAllType, setQuizAllType] = useState(false);
 
-  // Button refs
+  // button references
   const buttonRefs = useRef(null);
 
-  // Check game end
+  // check if the game is over
   const checkQuizEnd = () => {
     const { level, stage } = quizState;
 
@@ -56,7 +56,7 @@ const App = () => {
     }
   };
 
-  // Check all type quiz is active
+  // check if all question types are enabled
   const checkAllTypeQuiz = () => {
     const randBoolean = Math.random() < 0.5;
     if (quizAllType) {
@@ -74,7 +74,7 @@ const App = () => {
     return getQuizQuestion(allCountries, quizQuestion, setQuizQuestion);
   };
 
-  // Get question
+  // get questions
   const getQuestion = async () => {
     await setQuizState({
       ...quizState,
@@ -89,8 +89,9 @@ const App = () => {
     checkQuizEnd();
   };
 
-  // Check the answer from user
+  // check the answers from the users
   const checkAnswer = async (e, answer) => {
+    // if the answer is correct
     if (answer === quizQuestion.answer.trueAnswer) {
       await setQuizState({
         ...quizState,
@@ -98,9 +99,9 @@ const App = () => {
         isTrue: true,
         score: (quizState.score += 1),
       });
-
       return e.target.classList.add('true');
     } else {
+      // if the answer is wrong
       await setQuizState({ ...quizState, isFalse: true, isTrue: false });
       buttonRefs.current.buttonRefs.current.buttonRefs.map((elButton) => {
         if (
@@ -113,12 +114,11 @@ const App = () => {
         }
         return elButton;
       });
-
       return e.target.classList.add('false');
     }
   };
 
-  // Reset quiz game
+  // reset all
   const resetQuizGame = () => {
     setQuizQuestion({
       question: {
@@ -148,6 +148,7 @@ const App = () => {
     setQuizAllType(false);
   };
 
+  // retrieve state data
   const fetchingCountry = async () => {
     await fetch('https://restcountries.eu/rest/v2/all')
       .then((res) => res.json())

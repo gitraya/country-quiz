@@ -1,10 +1,11 @@
-import { onValueChange } from '../utility';
+import { onValueChange } from 'utils/utils';
 
 const QuizMenu = ({ quizState, setQuizState, getQuestion, setQuizAllType }) => {
-  // Start a quiz game
+  // start a quiz
   const startGame = () => {
     const { capital, flag } = quizState.type;
 
+    // if all types are not selected
     if (!capital && !flag) {
       return alert('You must select at least one question type!');
     } else if (capital && flag) {
@@ -14,13 +15,13 @@ const QuizMenu = ({ quizState, setQuizState, getQuestion, setQuizAllType }) => {
     getQuestion();
   };
 
-  // Handle form submit
+  // handle form submit
   const handleFormSubmit = (e) => {
     e.preventDefault();
     startGame();
   };
 
-  // Handle value change
+  // handle value changes
   const handleValueChange = (e) => {
     onValueChange(e, quizState, setQuizState);
   };
