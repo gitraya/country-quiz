@@ -149,8 +149,8 @@ const App = () => {
   };
 
   // retrieve state data
-  const fetchingCountry = async () => {
-    await fetch('https://restcountries.eu/rest/v2/all')
+  const fetchingCountry = () => {
+    fetch('https://restcountries.eu/rest/v2/all')
       .then((res) => res.json())
       .then((data) => setAllCountries(data))
       .catch((err) => {
